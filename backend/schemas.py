@@ -1,10 +1,14 @@
 from pydantic import BaseModel
 from typing import List
+from enum import Enum,IntEnum
 
+class FileFormatEnum(str, Enum):
+    CSV = 'csv'
+    XLSX = 'xlsx'
 
 class FileParameters(BaseModel):
     rows: int
-    type: str  # for now
+    type: FileFormatEnum
     columns: List["ColumnParameters"]
     class Config:
         from_attributes = True

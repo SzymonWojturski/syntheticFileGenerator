@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend import schemas, generate_files
+from backend.schemas import FileParameters,FileFormatEnum
+from backend.generate_files import generate_file
 
 app = FastAPI()
 origins = [
@@ -22,6 +23,11 @@ async def root():
     return {"message": "Hello World"}
 
 
+@app.get("/types")
+async def root():
+    return {"types": [item.value for item in FileFormatEnum]}
+
+
 @app.post("/params")
-async def params(file_parameters: schemas.FileParameters):
-    return {"file": generate_files.generate_file(file_parameters)}
+async def params(file_parameters: FileParameters):
+    return {"file": generate_file(file_parameters)}
