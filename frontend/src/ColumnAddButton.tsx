@@ -1,11 +1,11 @@
 
 export default function ColumnAddButton() {
-  async function addColumn(formData:FormData) {
+  async function addColumn() {
     alert(`Add new column`);
   }
 
   return (
-    <form action={addColumn}>
+    <form onClick={addColumn}>
       <button type="submit">New column</button>
     </form>
   );

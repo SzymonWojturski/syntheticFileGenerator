@@ -9,7 +9,7 @@ export default function Column() {
   }
 
   return (
-    <form action={remove}>
+    <form onClick={remove}>
       <input name="min" placeholder="min" />
       <input name="max" placeholder="max" />
       <input name="unit" placeholder="unit" />
