@@ -6,7 +6,7 @@ from enum import Enum
 class FileFormatEnum(str, Enum):
     CSV = 'csv'
     XLSX = 'xlsx'
-    # JSON = 'json'
+    JSON = 'json'
 
 
 class FileParameters(BaseModel):

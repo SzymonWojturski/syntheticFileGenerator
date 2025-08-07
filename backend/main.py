@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from backend.schemas import FileParameters,FileFormatEnum
 from backend.generate_files import generate_file
-from fastapi.responses import StreamingResponse
 
 app = FastAPI()
 origins = [
