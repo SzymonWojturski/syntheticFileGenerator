@@ -1,0 +1,21 @@
+.table-row {
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.2s ease-in-out;
+}
+.table-row td{
+    height: 50px;
+}
+
+.table-row td.name {
+    min-width: 150px;
+}
+.table-row td.min {
+    min-width: 75px;
+}
+.table-row td.max {
+    min-width: 75px;
+}
+.table-row td.unit {
+    min-width: 150px;
+}
+

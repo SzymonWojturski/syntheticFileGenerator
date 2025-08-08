@@ -1,0 +1,11 @@
+input{
+    background-color:inherit;
+    border: 1px;
+    border-radius: 4px;
+    border-style: solid;
+    border-color: #5c5c5c;
+    height: 25px;
+    
+    width: auto;
+    min-width: 50px;
+}
