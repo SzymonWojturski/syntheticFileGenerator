@@ -7,7 +7,14 @@ import React from 'react';
 function App() {
   const [dataSize,setDataSize]=React.useState(0)
   const [fileType,setFileType]=React.useState('')
-  const [dataRows, setDataRows] = React.useState([]);
+  const [dataRows, setDataRows] = React.useState([{
+                id: Date.now(),
+                name: 'example name',
+                min: 0,
+                max: 100,
+                unit: "-"
+            }]);
+  const [apiResponse,setAPIResponse]=React.useState({})
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,8 +34,11 @@ function App() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(json),
-      });
-      console.log(JSON.stringify(json))
+      })
+        .then(response => response.json())
+        .then(data => setAPIResponse(data))
+        .then(console.log(JSON.stringify(apiResponse)));
+      
     }catch(e){
       console.log(e)
     }
@@ -45,13 +55,18 @@ function App() {
         Number of rows: 
         <input 
           className='number-of-rows'
+          type="number" 
           onChange={(e) => {setDataSize(parseInt(e.target.value))}}
         />
         Output file type:
         <FileTypeSelect setFileType={setFileType}/>
       </div>
       <p />
-      <button onClick={handleSubmit}>Submit</button>
+      <button
+       onClick={handleSubmit}
+       className="submit-button">
+        Submit
+      </button>
     </>
   );
 }

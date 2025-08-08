@@ -20,8 +20,9 @@ function TableRow({ rowData, setRowData, handleRemoveRow }) {
     return (
         <tr className="table-row">
             <td
-                    className="name">
+                className="cell-text">
                 <EditableCell
+                    dataPlaceholder={"name"}
                     dataKey="name"
                     dataType="string"
                     dataValue={rowData.name}
@@ -30,8 +31,9 @@ function TableRow({ rowData, setRowData, handleRemoveRow }) {
                 />
             </td>
             <td
-                    className="min">
+                className="cell-number">
                 <EditableCell
+                    dataPlaceholder={"min"}
                     dataKey="min"
                     dataType="number"
                     dataValue={rowData.min}
@@ -40,8 +42,9 @@ function TableRow({ rowData, setRowData, handleRemoveRow }) {
                 />
             </td>
             <td
-                    className="max">
+                className="cell-number">
                 <EditableCell
+                    dataPlaceholder={"max"}
                     dataKey="max"
                     dataType="number"
                     dataValue={rowData.max}
@@ -50,8 +53,9 @@ function TableRow({ rowData, setRowData, handleRemoveRow }) {
                 />
             </td>
             <td
-                    className="unit">
+                className="cell-text">
                 <EditableCell
+                    dataPlaceholder={"unit"}
                     dataKey="unit"
                     dataType="string"
                     dataValue={rowData.unit}
@@ -59,12 +63,12 @@ function TableRow({ rowData, setRowData, handleRemoveRow }) {
                     onChange={val => handleChange("unit", val)}
                 />
             </td>
-            <td>
+            <td className="button-toggle-row-state">
                 <button onClick={toggleRowState}>
-                    {rowState === "inactive" ? "EDIT" : "SAVE"}
+                    {rowState === "inactive" ? "Edit" : "Save"}
                 </button>
             </td>
-            <td>
+            <td className="button-remove-row">
                 <button onClick={handleRemoveRow}>Remove</button>
             </td>
         </tr>

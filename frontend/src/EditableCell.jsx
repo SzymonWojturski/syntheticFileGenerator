@@ -1,17 +1,19 @@
+import "./EditableCell.css"
 
-function EditableCell({ dataKey, dataType, dataValue, mode, onChange }) {
+function EditableCell({ dataKey, dataType, dataValue, mode, dataPlaceholder ,onChange }) {
     return (
-        <div className="editable-cell">
+        <>
             {mode === "active" ? (
                 <input
                     type={dataType === "number" ? "number" : "text"}
                     value={dataValue}
+                    placeholder={dataPlaceholder}
                     onChange={e => onChange(dataType === "number"?parseInt(e.target.value)  :e.target.value)}
                 />
             ) : (
-                dataValue
+                <div className="cell-data">{dataValue}</div>
             )}
-        </div>
+        </>
     );
 }
 

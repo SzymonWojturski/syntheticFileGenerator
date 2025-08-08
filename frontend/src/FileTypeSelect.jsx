@@ -6,11 +6,14 @@ function FileTypeSelect ({setFileType,...props}) {
     const [fileTypes,setFileTypes]=React.useState([])
 
     React.useEffect(() => {
-        fetch("http://localhost:8000/types")
-        .then(response => response.json())
-        .then(data => setFileTypes(data.types))
-    },[])
-    function handleChange(){}
+    fetch("http://localhost:8000/types")
+    .then(response => response.json())
+    .then(data => {
+        setFileTypes(data.types);
+        setFileType(data.types[0]);
+    })
+}, []);
+
 
     return (<>
     <select className="file-type-select" onChange={(e) => {setFileType(e.target.value);

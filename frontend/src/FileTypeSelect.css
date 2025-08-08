@@ -1,3 +1,26 @@
 .file-type-select{
     margin-left: 10px;
+    height: 30px;
+    background-color:inherit;
+    padding: 0;
+    border-radius: 4px;
+    border-style: solid;
+    border-color: #505050;
+    height: 50px;
+    justify-content: center;
+    justify-items: center;
+    font-size:1.2em;
 }
+.file-type-select option{
+    background-color: #505050;
+}
+/* .file-type-select option:hover{
+    background-color: #707070;
+    background: #707070;
+    color: #707070;
+}
+.file-type-select option:focus{
+    background-color: #707070;
+    background: #707070;
+    color: #707070;
+} */

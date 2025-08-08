@@ -1,4 +1,3 @@
-
 import React from 'react';
 import TableRow from './TableRow';
 import './EditableTable.css';
@@ -20,7 +19,9 @@ function EditableTable(
     }
 
     function handleRemoveRow(idToRemove) {
-        setRows(prev => prev.filter(row => row.id !== idToRemove));
+        if (rows.length>1){
+            setRows(prev => prev.filter(row => row.id !== idToRemove));
+        }
     }
 
     return (
@@ -47,8 +48,8 @@ function EditableTable(
                     ))}
                 </tbody>
             </table>
+            <button className="button-add-record" onClick={handleAddRow}>Add record</button>
 
-            <button onClick={handleAddRow}>Add record</button>
         </>
     );
 }

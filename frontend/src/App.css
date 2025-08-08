@@ -1,6 +1,14 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  /* padding: 2rem; */
   text-align: center;
+}
+.submit-button{
+  height: 50px;
+  width: 200px;
+}
+.number-of-rows{
+  margin-left: 10px;
+  margin-right: 20px;
 }
