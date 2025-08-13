@@ -1,0 +1,13 @@
+.table-demo-file td{
+    padding: 5px;
+}
+
+.link-back button{
+    height: 60px;
+    width: 150px;
+    margin-bottom: 10px;
+}
+.div-demo{
+    justify-content: left;
+    justify-items: left;
+}

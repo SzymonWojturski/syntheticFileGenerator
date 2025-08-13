@@ -1,0 +1,29 @@
+.cell-data{
+  border: 0px;
+  background-color: #242424;
+  border-radius: 4px;
+  border-style: solid;
+  border-color: #242424;
+  height: 50px;
+  text-align: justify;
+  justify-content: left;
+  justify-items: left;
+  font-size:1.2em;
+  margin: 0; 
+  padding: 2px 2px 2px 7px;
+}
+
+input
+{
+    padding: 2px 0 2px 5px;
+    border-radius: 4px;
+    border-style: solid;
+    border-color: #505050;
+    height: 50px; 
+    font-size:1.2em;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}

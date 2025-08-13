@@ -1,0 +1,24 @@
+table
+{
+    
+  margin: 20px;
+}
+td{
+  text-align: center;
+  vertical-align: middle;
+}
+td
+{
+    width: 150px;
+    margin: 0;
+}
+input{
+    
+    width: 100px;
+}
+.number-of-rows{
+    margin: 0;
+}
+.seed-switch{
+    width: 20px;
+}
