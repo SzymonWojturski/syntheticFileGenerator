@@ -24,14 +24,15 @@ Generates and returns a file with synthetic trade data.
 **Request Parameters (JSON structure):**  
 ```text
 {
-  "rows": int,                             # Number of trade rows to generate
-  "wallets": int,                         # Number of unique wallets to simulate
-  "usd_min": float,                    # Minimum USD value per trade
-  "usd_max": float,                   # Maximum USD value per trade
-  "extension": string,                # File format (e.g., csv, xlsx, json, pdf)
+  "rows": int,            # Number of trade rows to generate
+  "wallets": int,         # Number of unique wallets to simulate
+  "usd_min": float,       # Minimum USD value per trade
+  "usd_max": float,       # Maximum USD value per trade
+  "extension": string,    # File format (e.g., csv, xlsx, json, pdf)
   "date_max": "yyyy-mm-dd", # [Optional] Latest possible date for trades
-  "seed": int                              # [Optional] Seed for reproducible random generation
+  "seed": int            # [Optional] Seed for reproducible random generation
 }
+```
 ```
 
 
