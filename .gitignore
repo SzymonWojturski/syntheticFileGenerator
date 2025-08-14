@@ -76,7 +76,7 @@ __pycache__/
 
 # Log files
 *.log
-*.csv
+.csv
 *.dat
 *.out
 *.pid
