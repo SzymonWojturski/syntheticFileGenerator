@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 from typing import List
 from enum import Enum
+from datetime import date
 
 
 class FileFormatEnum(str, Enum):
@@ -13,20 +14,12 @@ class FileFormatEnum(str, Enum):
 
 class FileParameters(BaseModel):
     rows: int
-    type: FileFormatEnum
     seed: Optional[int] = None
-    columns: List["ColumnParameters"]
-
-    class Config:
-        from_attributes = True
-
-
-class ColumnParameters(BaseModel):
-    name: str
-    is_int: bool
-    min: int
-    max: int
-    unit: str
+    wallets:int
+    usd_min:float
+    usd_max:float
+    date_max:Optional[date]=None
+    extention:FileFormatEnum
 
     class Config:
         from_attributes = True

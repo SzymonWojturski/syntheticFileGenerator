@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from schemas import FileParameters,FileFormatEnum
-from generate_files import generate_file,generate_file_demo
+from generate_files import generate_file
 from fastapi.responses import StreamingResponse
 
 app = FastAPI()
@@ -28,15 +28,16 @@ async def root():
 async def root():
     return {"types": [item.value for item in FileFormatEnum]}
 
-@app.post("/demo")
-async def root(file_parameters: FileParameters):
-    return {"demo":generate_file_demo(file_parameters)}
+# @app.post("/demo")
+# async def root(file_parameters: FileParameters):
+#     return {"demo":generate_file_demo(file_parameters)}
 
 @app.post("/file")
 async def params(file_parameters: FileParameters):
     file = generate_file(file_parameters)
 
-    ext = file_parameters.type.lower()
+    # return {"file":file}
+    ext = file_parameters.extention.lower()
 
     if ext == "xlsx":
         media_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
