@@ -60,7 +60,7 @@ pip install -r backend/requirements.txt
 
 3. **Run the backend server**  
 ```bash
-python backend/main.py
+python -m backend
 ```
 
 4. **Access the API documentation**  
