@@ -33,7 +33,7 @@ Generates and returns a file with synthetic trade data.
   "seed": int            # [Optional] Seed for reproducible random generation
 }
 ```
-```
+
 
 
 **Response:**  
