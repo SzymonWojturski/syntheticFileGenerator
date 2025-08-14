@@ -18,22 +18,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/types")
-async def root():
-    return {"types": [item.value for item in FileFormatEnum]}
+@app.get("/extentions")
+async def extentions():
+    return {"extentions": [item.value for item in FileFormatEnum]}
 
 # @app.post("/demo")
 # async def root(file_parameters: FileParameters):
 #     return {"demo":generate_file_demo(file_parameters)}
 
 @app.post("/file")
-async def params(file_parameters: FileParameters):
+async def create_file(file_parameters: FileParameters):
     file = generate_file(file_parameters)
 
     # return {"file":file}
