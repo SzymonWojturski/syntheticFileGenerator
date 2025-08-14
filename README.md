@@ -55,12 +55,12 @@ python -m venv venv
 
 2. **Activate the virtual environment**  
 
-**Linux / macOS:**  
+- Linux / macOS:  
 ```bash
 source venv/bin/activate
 ```
 
-**Windows (CMD):**  
+- Windows (CMD):  
 ```cmd
 venv\Scripts\activate
 ```
