@@ -53,14 +53,21 @@ A file containing the generated synthetic trades according to the requested para
 python -m venv venv
 ```
 
-2. **Enter virtual environment**
-Linux/MacOS
+2. **Activate the virtual environment**  
+
+**Linux / macOS:**  
 ```bash
 source venv/bin/activate
 ```
-Windows
-```bash
+
+**Windows (CMD):**  
+```cmd
 venv\Scripts\activate
+```
+
+**Windows (PowerShell):**  
+```powershell
+venv\Scripts\Activate.ps1
 ```
 
 3. **Install dependencies**  
@@ -70,10 +77,9 @@ pip install -r backend/requirements.txt
 
 4. **Run the backend server**  
 ```bash
-python -m backend
+python backend/main.py
 ```
 
 5. **Access the API documentation**  
 Open in your browser: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
----
