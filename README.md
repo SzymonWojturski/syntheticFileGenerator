@@ -1,30 +1,54 @@
-# React, Vite, Electron, and FastAPI Full-Stack Application
+# Synthetic File Generator
 
-Welcome to our full-stack application built with React, Vite, Electron, and FastAPI! This project combines modern front-end and back-end technologies to create a powerful and seamless user experience.
+**Synthetic File Generator** is a tool to generate random cryptocurrency trade operations for testing and simulation purposes.
 
-## Overview
+## Backend
 
-This application showcases the integration of React for the front-end, Vite for fast development and optimized production builds, Electron for cross-platform desktop application development, and FastAPI for the back-end API. With these technologies, we aim to deliver a robust and efficient full-stack solution.
+### Endpoints
 
-## Features
+#### 1. `POST /file`
+Returns a randomly generated file with synthetic trade data.
 
-- **React:** Build dynamic and interactive user interfaces with the React library.
-- **Vite:** Enjoy lightning-fast development and optimized production builds with Vite.
-- **Electron:** Develop cross-platform desktop applications using Electron.
-- **FastAPI:** Create robust and efficient back-end APIs with FastAPI, a modern web framework for Python.
-  
-## Getting Started
+**Request Parameters (JSON):**  
+```json
+{
+  "rows": 0,        // Number of trade rows to generate
+  "wallets": 0,     // Number of unique wallets to simulate
+  "usd_min": 0,     // Minimum USD value per trade
+  "usd_max": 0,     // Maximum USD value per trade
+  "extension": "csv", // File format (available: csv, xlsx, json, pdf)
+  "date_max": "2025-08-14", // [Optional] Latest possible date for trades
+  "seed": 0        // [Optional] Seed for random generation
+}
+```
 
-To get started with the project, follow these steps:
+**Response:**  
+A file containing the generated synthetic trades according to the requested parameters.
 
-1. Clone the repository:
+### How to Run
 
-   ```bash
-   git clone https://github.com/your-username/react-vite-electron-fastapi.git
-   ```
+1. **Create a virtual environment**  
+```bash
+python -m venv venv
+```
 
+2. **Install dependencies**  
+```bash
+pip install -r backend/requirements.txt
+```
 
-2. Navigate to this [Article](https://medium.com/@onursasmaz)
+3. **Run the backend server**  
+```bash
+python backend/main.py
+```
 
-## Notes
-Feel free to adjust the content as needed to better suit your project's specifics or personal preferences.
+4. **Access the API documentation**  
+Open in your browser: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+---
+
+### Notes
+
+- Use the `seed` parameter for reproducible random data.  
+- Supported file formats: `csv`, `xlsx`, `json`, `pdf`.  
+- Ensure `usd_min` ≤ `usd_max` for valid trade values.
