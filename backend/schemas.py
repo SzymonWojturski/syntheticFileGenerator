@@ -4,7 +4,6 @@ from typing import List
 from enum import Enum
 from datetime import date
 
-
 class FileFormatEnum(str, Enum):
     CSV = 'csv'
     XLSX = 'xlsx'
