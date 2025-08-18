@@ -115,7 +115,7 @@ def generate_file(file_parameters: FileParameters):
             output.seek(0)
             return output
         case FileFormatEnum.PDF:
-            pdf_bytes = generate_pdf(file_parameters)  # powinno zwrócić bytes
+            pdf_bytes = generate_pdf(file_parameters)
             return io.BytesIO(pdf_bytes)
 
 def random_date(start_date=datetime(2010,1,1,0,0),end_date=datetime.now()):
