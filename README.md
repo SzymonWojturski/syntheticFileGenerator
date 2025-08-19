@@ -29,7 +29,8 @@ Generates and returns a file with synthetic trade data.
   "usd_min": float,       # Minimum USD value per trade
   "usd_max": float,       # Maximum USD value per trade
   "extension": string,    # File format (e.g., csv, xlsx, json, pdf)
-  "date_max": "yyyy-mm-dd", # [Optional] Latest possible date for trades
+  "date_min": "yyyy-mm-dd", # [Optional] Earliest possible transaction date
+  "date_max": "yyyy-mm-dd", # [Optional] Latest possible transaction date
   "seed": int            # [Optional] Seed for reproducible random generation
 }
 ```

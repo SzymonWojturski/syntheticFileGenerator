@@ -5,37 +5,25 @@ import pandas as pd
 import os
 from csv import DictReader, writer
 import json
-DEMO_FILE_ROWS=10
 from datetime import datetime, timedelta, date
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.pdfbase.pdfmetrics import stringWidth
+from backend.contains import HASHES_FILE, get_addresses_file,AVAILABLE_TOKENS,CURRENCY_VALUES_RANGE
+import orjson
+from typing import Optional
 
-def random_date(start_date=datetime(2010,1,1,0,0),end_date=datetime.now()):
-    delta = end_date - start_date
-    delta_in_second = (delta.days * 24 * 60 * 60) + delta.seconds
-    random_second = random.randrange(delta_in_second)
-    return start_date + timedelta(seconds=random_second)
-
-
-def get_token_names():
-    dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, 'raw_data/avalivble_tokens.json')
-
-    with open(filename) as f:
+def get_token_names()->list[str]:
+    with open(AVAILABLE_TOKENS) as f:
         d = json.load(f)
         return d
 
-
-def get_token_data():
-    dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, 'raw_data/currency_values_range_rotated.csv')
-
-    with open(filename, "r", encoding="utf-8") as f:
+def get_token_data()->dict[str,dict[str,str]]:
+    with open(CURRENCY_VALUES_RANGE, "r", encoding="utf-8") as f:
         reader = DictReader(f)
         data = []
-
         for row in reader:
             row['max'] = float(row['max'])
             row['min'] = float(row['min'])
@@ -44,25 +32,48 @@ def get_token_data():
     token_map = {item['ticker']: {'min': item['min'], 'max': item['max']} for item in data}
     return token_map
 
-def get_wallets(token,number):
-    dirname = os.path.dirname(__file__)
-    filename=os.path.join(dirname, f'raw_data/addresses_{token}.csv')
+def get_wallets(token,number)->list[str]:
+    filename=get_addresses_file(token)
     wallets = pd.read_csv(filename).sample(n=number).values
     wallets=[wallet[0] for wallet in wallets]
     return wallets
 
-def get_hashes(number):
-    dirname = os.path.dirname(__file__)
-    filename=os.path.join(dirname, 'raw_data/20250723213212_ETH_hash.csv')
-    hashes = pd.read_csv(filename).sample(n=number).values
-    hashes=[wallet[0] for wallet in hashes]
+def csv_reservoir_sampling(filename,n)->list[str]:
+    reservoir = []
+    with open(filename, 'r', encoding='utf-8') as f:
+        for i, line in enumerate(f):
+            line = line.strip()
+            if i < n:
+                reservoir.append(line)
+            else:
+                j = random.randint(0, i)
+                if j < n:
+                    reservoir[j] = line
+    return reservoir
+
+def random_date(start_date: Optional[date] = None, end_date: Optional[date] = None) -> datetime:
+    start_date = start_date or date(2010, 1, 1)
+    end_date = end_date or datetime.now().date()
+
+    if isinstance(start_date, date) and not isinstance(start_date, datetime):
+        start_date = datetime.combine(start_date, datetime.min.time())
+    if isinstance(end_date, date) and not isinstance(end_date, datetime):
+        end_date = datetime.combine(end_date, datetime.max.time())
+    
+    delta_in_seconds = int((end_date - start_date).total_seconds())
+    if delta_in_seconds <= 0:
+        return start_date
+
+    random_second = random.randrange(delta_in_seconds)
+    return start_date + timedelta(seconds=random_second)
+
+def get_hashes(number)->list[str]:
+    hashes = csv_reservoir_sampling(HASHES_FILE,number)
     return hashes
     
-def generate_data(file_parameters: FileParameters):
+def generate_data(file_parameters: FileParameters)->list[dict]:
     if(file_parameters.seed!=None):
         random.seed(file_parameters.seed)
-    dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, 'raw_data/currency_values_range.csv')
     tokens=get_token_names()
     wallets={}
     for token in tokens:
@@ -76,7 +87,7 @@ def generate_data(file_parameters: FileParameters):
         token=random.choice(tokens)
         amount_flat=random.uniform(file_parameters.usd_min,file_parameters.usd_max)
         asset_rate=random.uniform(token_data[token]["min"],token_data[token]["max"])
-        date=random_date()
+        date=random_date(start_date=file_parameters.date_min,end_date=file_parameters.date_max)
         wallet=random.choice(wallets[token])
         partial={
             "Tx number":i,
@@ -93,111 +104,61 @@ def generate_data(file_parameters: FileParameters):
         data.append(partial)
     return data
 
-
-
-def generate_file(file_parameters: FileParameters):
-    file_data = generate_data(file_parameters)
-    df = pd.DataFrame(file_data)
-    df['Date'] = df['Date'].dt.strftime('%Y-%m-%d %H:%M:%S')
-    output = io.BytesIO()
-    
-    match file_parameters.extention:
-        case FileFormatEnum.CSV:
-            df.to_csv(output, index=False)
-            output.seek(0)
-            return output
-        case FileFormatEnum.JSON:
-            json_bytes = generate_json(file_parameters).encode('utf-8')
-            return io.BytesIO(json_bytes)
-        case FileFormatEnum.XLSX:
-            with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-                df.to_excel(writer, index=False)
-            output.seek(0)
-            return output
-        case FileFormatEnum.PDF:
-            pdf_bytes = generate_pdf(file_parameters)
-            return io.BytesIO(pdf_bytes)
-
-def random_date(start_date=datetime(2010,1,1,0,0),end_date=datetime.now()):
-    delta = end_date - start_date
-    delta_in_second = (delta.days * 24 * 60 * 60) + delta.seconds
-    random_second = random.randrange(delta_in_second)
-    return start_date + timedelta(seconds=random_second)
-
-
-def get_token_names():
+def get_token_names()->list[str]:
     dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, 'raw_data/avalivble_tokens.json')
+    filename = os.path.join(dirname, AVAILABLE_TOKENS)
 
     with open(filename) as f:
         d = json.load(f)
         return d
 
-
-def get_token_data():
-    dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, 'raw_data/currency_values_range_rotated.csv')
-
-    with open(filename, "r", encoding="utf-8") as f:
-        reader = DictReader(f)
-        data = []
-
-        for row in reader:
-            row['max'] = float(row['max'])
-            row['min'] = float(row['min'])
-            data.append(row)
-
-    token_map = {item['ticker']: {'min': item['min'], 'max': item['max']} for item in data}
-    return token_map
-
-def get_wallets(token,number):
-    dirname = os.path.dirname(__file__)
-    filename=os.path.join(dirname, f'raw_data/addresses_{token}.csv')
-    wallets = pd.read_csv(filename).sample(n=number).values
-    wallets=[wallet[0] for wallet in wallets]
-    return wallets
-
-def get_hashes(number):
-    dirname = os.path.dirname(__file__)
-    filename=os.path.join(dirname, 'raw_data/20250723213212_ETH_hash.csv')
-    hashes = pd.read_csv(filename).sample(n=number).values
-    hashes=[wallet[0] for wallet in hashes]
-    return hashes
-
-
-def generate_file(file_parameters: FileParameters):
+def generate_file(file_parameters: FileParameters) -> io.BytesIO:
     file_data = generate_data(file_parameters)
-    df = pd.DataFrame(file_data)
-    df['Date'] = df['Date'].dt.strftime('%Y-%m-%d %H:%M:%S')
-    output = io.BytesIO()
-    
-    match file_parameters.extention:
-        case FileFormatEnum.CSV:
-            df.to_csv(output, index=False)
-            output.seek(0)
-            return output
+    return convert_data_to_file(file_data,file_parameters.extention)
+
+def convert_data_to_file(file_data,file_extention)-> io.BytesIO:
+
+    match file_extention:
+
         case FileFormatEnum.JSON:
-            json_bytes = generate_json(file_parameters).encode('utf-8')
-            return io.BytesIO(json_bytes)
-        case FileFormatEnum.XLSX:
-            with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-                df.to_excel(writer, index=False)
-            output.seek(0)
-            return output
+            return generate_json(file_data)
+        
         case FileFormatEnum.PDF:
-            pdf_bytes = generate_pdf(file_parameters)
-            return io.BytesIO(pdf_bytes)
+            return generate_pdf(file_data)
+        
+        case FileFormatEnum.CSV:
+            return generate_csv(file_data)
 
-def generate_json(file_parameters: FileParameters):
-    data = generate_data(file_parameters)
-    return json.dumps(data, indent=4, default=str)
+        case FileFormatEnum.XLSX:
+            return generate_xlsx(file_data)
 
+def file_data_to_df(file_data) ->pd.DataFrame:
+    df = pd.DataFrame(file_data)
+    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+    df['Date'] = df['Date'].dt.strftime(r"%Y-%m-%d %H:%M:%S")
+    return df
 
-from reportlab.pdfbase.pdfmetrics import stringWidth
+def generate_xlsx(file_data)-> io.BytesIO:
+    output = io.BytesIO()
+    df=file_data_to_df(file_data)
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False)
+    output.seek(0)
+    return output
 
-def generate_pdf(file_parameters: FileParameters):
-    data = generate_data(file_parameters)
-    df = pd.DataFrame(data)
+def generate_csv(file_data)-> io.BytesIO:
+    output = io.BytesIO()
+    df=file_data_to_df(file_data)
+    df.to_csv(output, index=False)
+    output.seek(0)
+    return output
+
+def generate_json(file_data) -> io.BytesIO:
+    bytes_data = orjson.dumps(file_data)
+    return io.BytesIO(bytes_data)
+
+def generate_pdf(file_data):
+    df = pd.DataFrame(file_data)
 
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=landscape(A4))
@@ -235,4 +196,4 @@ def generate_pdf(file_parameters: FileParameters):
     doc.build(elements)
     pdf_bytes = buffer.getvalue()
     buffer.close()
-    return pdf_bytes
+    return io.BytesIO(pdf_bytes)

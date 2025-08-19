@@ -17,6 +17,7 @@ class FileParameters(BaseModel):
     wallets:int
     usd_min:float
     usd_max:float
+    date_min:Optional[date]=None
     date_max:Optional[date]=None
     extention:FileFormatEnum
 
