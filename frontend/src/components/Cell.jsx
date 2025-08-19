@@ -1,18 +1,19 @@
 import "./Cell.css"
 
-function Cell({ dataKey, dataType, dataValue, mode, dataPlaceholder ,onChange }) {
+function Cell({ dataType, dataValue, isActive, dataPlaceholder ,onChange}) {
     return (
         <>
-            {mode === "active" ? (
+            {isActive ? (
                 <input
                     className="cell-input"
-                    type={dataType === "number" ? "number" : "text"}
+                    type= "number" 
                     value={dataValue}
                     placeholder={dataPlaceholder}
-                    onChange={e => onChange(dataType === "number"?parseInt(e.target.value)  :e.target.value)}
+                    onChange={e => onChange(dataType === "int"?parseInt(e.target.value)  :parseFloat(e.target.value))}
                 />
             ) : (
-                <div className="cell-data">{dataValue}</div>
+                // <div className="cell-data">{dataValue}</div>
+                <></>
             )}
         </>
     );

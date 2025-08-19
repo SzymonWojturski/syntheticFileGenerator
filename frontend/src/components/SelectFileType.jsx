@@ -6,11 +6,11 @@ function SelectFileType ({setFileType,...props}) {
     const [fileTypes,setFileTypes]=React.useState([])
 
     React.useEffect(() => {
-    fetch("http://localhost:8000/types")
+    fetch("http://localhost:8000/extentions")
     .then(response => response.json())
     .then(data => {
-        setFileTypes(data.types);
-        setFileType(data.types[0]);
+        setFileTypes(data.extentions);
+        setFileType(data.extentions[0]);
     })
 }, []);
 

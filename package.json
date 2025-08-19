@@ -4,13 +4,12 @@
   "main": "electron/main.cjs",
   "scripts": {
     "start": "concurrently \"npm run start-backend\" \"npm run start-frontend\" \"npm run start-electron\"",
-    "start-backend": "cd backend && python main.py",
+    "start-backend": "python -m backend",
     "start-frontend": "cd frontend && npm run dev",
     "start-electron": "electron ."
-
   },
   "devDependencies": {
     "concurrently": "^7.6.0",
-    "electron": "^15.3.0"
+    "electron": "^15.5.7"
   }
 }

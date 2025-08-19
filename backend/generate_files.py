@@ -95,7 +95,7 @@ def generate_data(file_parameters: FileParameters)->list[dict]:
             "Ticker":token,
             "Amount flat (USD)":amount_flat,
             "Asset rate (USD)":asset_rate,
-            "Type":"will be implemented",
+            "Type":random.choice(["Purchase", "Sale"]),
             "Date":date,
             "Wallet address":wallet,
             "Third-party adress":0,

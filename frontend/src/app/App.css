@@ -12,3 +12,16 @@
   margin-left: 10px;
   margin-right: 20px;
 }
+table 
+{
+  border-style: solid;
+  border-radius: 5px;
+  border-color: rgb(18, 22, 22);
+  background-color: #242424;
+  padding: 4px;
+}
+.button-add-record{
+  margin: 10px;
+  width: 400px;
+  height: 50px;
+}
