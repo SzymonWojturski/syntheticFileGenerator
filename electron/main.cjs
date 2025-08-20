@@ -1,47 +1,34 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-const fs = require('fs');
+const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const { spawn } = require('child_process');
 
+let backendProcess;
 
 function createWindow() {
-    const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.cjs'),
-            contextIsolation: true,
-            enableRemoteModule: false,
-            nodeIntegration: false
-        }
-    });
-    mainWindow.loadURL('http://localhost:5173');
+  const win = new BrowserWindow({
+    width: 1024,
+    height: 768,
+    webPreferences: { nodeIntegration: true, contextIsolation: false }
+  });
 
+  win.loadFile(path.join(__dirname, '../frontend/dist/index.html'));
 }
 
-app.whenReady().then(() => {
-    const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
-            contextIsolation: true,
-            nodeIntegration: false,
-        }
-    });
+function startBackend() {
+  // Pełna ścieżka do zbudowanej binarki
+  const backendExecutable = path.join(__dirname, '../backend/dist/builded');
 
-    mainWindow.loadURL('http://localhost:5173');
+  backendProcess = spawn(backendExecutable);
+
+  backendProcess.stdout.on('data', (data) => console.log(`BACKEND: ${data}`));
+  backendProcess.stderr.on('data', (data) => console.error(`BACKEND ERR: ${data}`));
+  backendProcess.on('close', (code) => console.log(`Backend exited with code ${code}`));
+  backendProcess.on('error', (err) => console.error('Failed to start backend:', err));
+}
+
+app.whenReady().then(() => { startBackend(); createWindow(); });
+
+app.on('window-all-closed', () => {
+  if (backendProcess) backendProcess.kill();
+  if (process.platform !== 'darwin') app.quit();
 });
-ipcMain.handle('save-file', async (event, { arrayBuffer, ext }) => {
-    const buffer = Buffer.from(arrayBuffer);
-    const { filePath, canceled } = await dialog.showSaveDialog({
-        defaultPath: `generated.${ext}`,
-        filters: [{ name: ext.toUpperCase(), extensions: [ext] }]
-    });
-
-    if (!canceled && filePath) {
-        fs.writeFileSync(filePath, buffer);
-        return { success: true };
-    }
-    return { success: false };
-});
-

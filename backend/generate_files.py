@@ -1,5 +1,5 @@
 import random
-from backend.schemas import FileParameters,FileFormatEnum
+from .schemas import FileParameters,FileFormatEnum
 import io 
 import pandas as pd
 import os
@@ -11,7 +11,7 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase.pdfmetrics import stringWidth
-from backend.contains import HASHES_FILE, get_addresses_file,AVAILABLE_TOKENS,CURRENCY_VALUES_RANGE
+from .contains import HASHES_FILE, get_addresses_file,AVAILABLE_TOKENS,CURRENCY_VALUES_RANGE
 import orjson
 from typing import Optional
 
