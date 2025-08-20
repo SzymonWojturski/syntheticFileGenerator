@@ -52,13 +52,11 @@ def csv_reservoir_sampling(filename,n)->list[str]:
     return reservoir
 
 def random_date(start_date: Optional[date] = None, end_date: Optional[date] = None) -> datetime:
-    start_date = start_date or date(2010, 1, 1)
-    end_date = end_date or datetime.now().date()
 
-    if isinstance(start_date, date) and not isinstance(start_date, datetime):
-        start_date = datetime.combine(start_date, datetime.min.time())
-    if isinstance(end_date, date) and not isinstance(end_date, datetime):
-        end_date = datetime.combine(end_date, datetime.max.time())
+    # if isinstance(start_date, date) and not isinstance(start_date, datetime):
+    #     start_date = datetime.combine(start_date, datetime.min.time())
+    # if isinstance(end_date, date) and not isinstance(end_date, datetime):
+    #     end_date = datetime.combine(end_date, datetime.max.time())
     
     delta_in_seconds = int((end_date - start_date).total_seconds())
     if delta_in_seconds <= 0:

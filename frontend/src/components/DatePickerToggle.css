@@ -1,0 +1,9 @@
+.toggle-datepicker input {
+  height: 50px;
+  width: 140px;
+}
+.placeholder-div{
+  /* height: px; */
+  width: 363px;
+  min-width: 10px;
+}

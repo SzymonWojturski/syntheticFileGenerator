@@ -4,7 +4,7 @@ const path = require('path');
 
 async function saveFile(arrayBuffer, ext) {
     try {
-        const buffer = Buffer.from(arrayBuffer); // konwersja ArrayBuffer -> Buffer
+        const buffer = Buffer.from(arrayBuffer);
 
         const { filePath, canceled } = await dialog.showSaveDialog({
             defaultPath: path.join(app.getPath('downloads'), `generated.${ext}`),

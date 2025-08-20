@@ -23,13 +23,13 @@ app.whenReady().then(() => {
         width: 800,
         height: 600,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js'), // Twój preload
+            preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
             nodeIntegration: false,
         }
     });
 
-    mainWindow.loadURL('http://localhost:5173'); // jeśli korzystasz z Vite/React dev server
+    mainWindow.loadURL('http://localhost:5173');
 });
 ipcMain.handle('save-file', async (event, { arrayBuffer, ext }) => {
     const buffer = Buffer.from(arrayBuffer);

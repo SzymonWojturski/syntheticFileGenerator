@@ -1,5 +1,5 @@
 import DatePicker from "react-datepicker";
-
+import './DatePickerToggle.css'
 import "react-datepicker/dist/react-datepicker.css";
 
 function DatePickerToggle({ dataValue, isActive ,onChange}) {
@@ -8,12 +8,12 @@ function DatePickerToggle({ dataValue, isActive ,onChange}) {
             {isActive ? (
                 <DatePicker 
 
-                showIcon
                 selected={dataValue}
                  onChange={(date) => onChange(date)} 
                 />
             ) : (
-                <></>
+                  <div className="placeholder-div"
+                  />
             )}
         </>
     );

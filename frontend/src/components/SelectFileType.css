@@ -1,5 +1,4 @@
 .file-type-select{
-    /* margin-left: 10px; */
     height: 30px;
     background-color:inherit;
     padding: 0;
@@ -11,6 +10,7 @@
     justify-items: center;
     font-size:1.2em;
     width: 108px;
+    color: #ffffff;
 }
 .file-type-select option{
     background-color: #505050;

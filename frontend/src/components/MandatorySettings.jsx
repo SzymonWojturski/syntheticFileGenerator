@@ -17,7 +17,7 @@ function MandatorySettings({
   ];
 
   return (
-    <table>
+    <table className="mandatory-settings-table">
       <tbody>
         {numericProps.map(({ type,label, value, setter }) => (
           <tr key={label}>

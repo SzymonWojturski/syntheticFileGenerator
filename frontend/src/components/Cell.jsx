@@ -12,8 +12,8 @@ function Cell({ dataType, dataValue, isActive, dataPlaceholder ,onChange}) {
                     onChange={e => onChange(dataType === "int"?parseInt(e.target.value)  :parseFloat(e.target.value))}
                 />
             ) : (
-                // <div className="cell-data">{dataValue}</div>
-                <></>
+                <div className="cell-placeholder"></div>
+                // <></>
             )}
         </>
     );

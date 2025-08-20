@@ -80,11 +80,6 @@ const handleDownload = async (e) => {
       <OptionalSettings
       {...optionalProps}
       />
-      {/* <button
-       onClick={handleDemo}
-       className="demo-button">
-        View demo
-      </button> */}
       <button
        onClick={handleDownload}
        className="download-button">

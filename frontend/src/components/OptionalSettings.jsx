@@ -3,6 +3,7 @@ import Switch from '@mui/material/Switch';
 import Cell from './Cell.jsx'
 import DatePickerToggle from './DatePickerToggle.jsx'
 import SwitchOptional from "./SwitchOptional.jsx";
+import './OptionalSettings.css'
 
 function OptionalSettings({
     seed, setSeed,
@@ -14,12 +15,12 @@ function OptionalSettings({
     const [maxDateState,setMaxDateState]= useState(false);
 
     const dateProps = [
-        { label: "starting date", value: dateMin, setValue: setDateMin, state: minDateState, setState: setMinDateState },
-        { label: "end date", value: dateMax, setValue: setDateMax, state: maxDateState, setState: setMaxDateState }
+        { label: "Starting date", value: dateMin, setValue: setDateMin, state: minDateState, setState: setMinDateState },
+        { label: "End date", value: dateMax, setValue: setDateMax, state: maxDateState, setState: setMaxDateState }
     ];
 
     return (
-        <table>
+        <table className="optional-settings-table">
             <tbody>
                 <tr>
                     <th>Seed:</th>

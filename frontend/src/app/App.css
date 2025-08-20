@@ -1,7 +1,11 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  justify-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 .download-button,
 .demo-button{
@@ -19,6 +23,9 @@ table
   border-color: rgb(18, 22, 22);
   background-color: #242424;
   padding: 4px;
+}
+tr{
+  height: 60px;
 }
 .button-add-record{
   margin: 10px;
