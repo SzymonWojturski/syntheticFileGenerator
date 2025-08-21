@@ -1,11 +1,18 @@
+# backend/contains.py
+import sys
 from pathlib import Path
+import os
 
-BASE_DIR = Path(__file__).resolve().parent
-RAW_DATA_DIR = BASE_DIR / "raw_data"
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
-HASHES_FILE = RAW_DATA_DIR / "ETH_hash.csv"
-AVAILABLE_TOKENS= RAW_DATA_DIR/ "available_tokens.json"
-CURRENCY_VALUES_RANGE= RAW_DATA_DIR / "currency_values_range.csv"
+AVAILABLE_TOKENS = resource_path("raw_data/available_tokens.json")
+HASHES_FILE = resource_path("raw_data/ETH_hash.csv")
+CURRENCY_VALUES_RANGE = resource_path("raw_data/currency_values_range.csv")
 
-def get_addresses_file(token: str) -> Path:
-    return RAW_DATA_DIR / f"addresses_{token}.csv"
+def get_addresses_file(token: str) -> str:
+    return resource_path(f"raw_data/addresses_{token}.csv")

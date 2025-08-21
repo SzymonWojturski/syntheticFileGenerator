@@ -1,5 +1,5 @@
 import random
-from .schemas import FileParameters,FileFormatEnum
+from backend.schemas import FileParameters,FileFormatEnum
 import io 
 import pandas as pd
 import os
@@ -11,14 +11,14 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase.pdfmetrics import stringWidth
-from .contains import HASHES_FILE, get_addresses_file,AVAILABLE_TOKENS,CURRENCY_VALUES_RANGE
+from backend.contains import HASHES_FILE, get_addresses_file,AVAILABLE_TOKENS,CURRENCY_VALUES_RANGE
 import orjson
 from typing import Optional
 
-def get_token_names()->list[str]:
-    with open(AVAILABLE_TOKENS) as f:
-        d = json.load(f)
-        return d
+def get_token_names() -> list[str]:
+    with open(AVAILABLE_TOKENS, "r", encoding="utf-8") as f:
+        return json.load(f)
+
 
 def get_token_data()->dict[str,dict[str,str]]:
     with open(CURRENCY_VALUES_RANGE, "r", encoding="utf-8") as f:
@@ -52,12 +52,6 @@ def csv_reservoir_sampling(filename,n)->list[str]:
     return reservoir
 
 def random_date(start_date: Optional[date] = None, end_date: Optional[date] = None) -> datetime:
-
-    # if isinstance(start_date, date) and not isinstance(start_date, datetime):
-    #     start_date = datetime.combine(start_date, datetime.min.time())
-    # if isinstance(end_date, date) and not isinstance(end_date, datetime):
-    #     end_date = datetime.combine(end_date, datetime.max.time())
-    
     delta_in_seconds = int((end_date - start_date).total_seconds())
     if delta_in_seconds <= 0:
         return start_date

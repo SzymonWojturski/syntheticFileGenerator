@@ -9,8 +9,8 @@ function SelectFileType ({setFileType,...props}) {
     fetch("http://localhost:8000/extensions")
     .then(response => response.json())
     .then(data => {
-        setFileTypes(data.extentions);
-        setFileType(data.extentions[0]);
+        setFileTypes(data.extensions);
+        setFileType(data.extensions[0]);
     })
 }, []);
 

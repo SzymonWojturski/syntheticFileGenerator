@@ -40,14 +40,14 @@ function parseInput() {
         usd_max:usdMax,
     };
 
-    if (!!seed) {
+    if (seed) {
         result.seed = parseInt(seed);
     }
-    if (!!dateMin) {
-        result.date_min = Date(seed);
+    if (dateMin) {
+      result.date_min = new Date(dateMin).toISOString();
     }
-    if (!!dateMax) {
-        result.date_max = Date(seed);
+    if (dateMax) {
+      result.date_max = new Date(dateMax).toISOString();
     }
 
     return result;

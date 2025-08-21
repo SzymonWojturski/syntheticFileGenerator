@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
-from .schemas import FileParameters, FileFormatEnum
-from .generate_files import generate_file
+from backend.schemas import FileParameters, FileFormatEnum
+from backend.generate_files import generate_file
 
 app = FastAPI()
 
