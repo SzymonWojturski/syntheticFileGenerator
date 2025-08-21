@@ -8,7 +8,7 @@
     "start": "electron .",
     "package": "electron-builder",
     "build:frontend": "cd frontend && npm install && npm run build",
-    "build:backend:linux": "python3 -m venv venv && source venv/bin/activate && pip install -r backend/requirements.txt && pyinstaller --clean --onedir --add-data \"raw_data:raw_data\" run.py  && deactivate",
+    "build:backend:linux": "python3 -m venv venv && source venv/bin/activate && pip install -r backend/requirements.txt && pyinstaller --clean --onedir --distpath backend/dist --workpath backend/build --add-data \"backend/raw_data:raw_data\" backend/run.py && deactivate",
     "build:backend:mac": "python3 -m venv venv && source venv/bin/activate && pip install -r backend/requirements.txt && pyinstaller --clean --onedir --distpath backend/dist --workpath backend/build --add-data \"backend/raw_data:raw_data\" backend/run.py && deactivate",
     "build:backend:windows": "python -m venv venv && .\\venv\\Scripts\\activate && pip install -r backend/requirements.txt && pyinstaller --clean --onedir --distpath backend\\dist --workpath backend\\build --add-data \"backend\\raw_data;raw_data\" backend/run.py && deactivate",
     "build:windows": "npm run build:frontend && npm run build:backend:windows && electron-builder",
@@ -31,20 +31,21 @@
       "frontend/dist/**/*",
       "electron/**/*.cjs",
       "electron/preload.js",
+      "electron/render.js",
       "package.json"
     ],
-  "extraResources": [
-    {
-      "from": "frontend/dist",
-      "to": "frontend/dist",
-      "filter": ["**/*"]
-    },
-    {
-      "from": "backend/dist",
-      "to": "backend/dist",
-      "filter": ["**/*"]
-    }
-  ],
+    "extraResources": [
+      {
+        "from": "frontend/dist",
+        "to": "frontend/dist",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "backend/dist",
+        "to": "backend",
+        "filter": ["**/*"]
+      }
+    ],
     "directories": {
       "buildResources": "assets"
     },
