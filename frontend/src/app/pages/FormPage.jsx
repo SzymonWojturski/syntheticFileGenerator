@@ -1,4 +1,4 @@
-import React ,{useState} from 'react';
+import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import MandatorySettings from '../../components/MandatorySettings.jsx';
 import OptionalSettings from '../../components/OptionalSettings.jsx';

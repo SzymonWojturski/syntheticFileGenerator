@@ -1,18 +1,60 @@
 {
-  "name": "my-project",
+  "name": "synthetic-file-generator",
+  "author":"Szymon Wojturski",
+  "productName":"Synthetic File Generator",
   "version": "1.0.0",
   "main": "electron/main.cjs",
   "scripts": {
     "start": "electron .",
-    "start-backend": "python -m backend",
-    "start-frontend": "cd frontend && npm run dev",
-    "start-electron": "wait-on tcp:5173 tcp:8000 && electron ."
+    "package": "electron-builder",
+    "build:frontend": "cd frontend && npm install && npm run build",
+
+    "build:backend:linux": "python3 -m venv venv && source venv/bin/activate && pip install -r backend/requirements.txt && pyinstaller --clean --onedir --distpath backend/dist --workpath backend/build --add-data \"backend/raw_data:raw_data\" backend/run.py && deactivate",
+    
+    "build:backend:mac": "python3 -m venv venv && source venv/bin/activate && pip install -r backend/requirements.txt && pyinstaller --clean --onedir --distpath backend/dist --workpath backend/build --add-data \"backend/raw_data:raw_data\" backend/run.py && deactivate",
+    
+    "build:backend:windows": "python -m venv venv && .\\venv\\Scripts\\activate && pip install -r backend/requirements.txt && pyinstaller --clean --onedir --distpath backend\\dist --workpath backend\\build --add-data \"backend\\raw_data;raw_data\" backend/run.py && deactivate",
+
+    "build:windows": "npm run build:frontend && npm run build:backend:windows && electron-builder",
+    "build:linux": "npm run build:frontend && npm run build:backend:linux && electron-builder",
+    "build:mac": "npm run build:frontend && npm run build:backend:mac && electron-builder"
   },
   "devDependencies": {
     "concurrently": "^7.6.0",
-    "electron": "^15.5.7"
+    "electron": "^37.3.1",
+    "electron-builder": "^26.0.12"
   },
   "dependencies": {
     "wait-on": "^8.0.4"
+  },
+  "build": {
+  "appId": "pl.agh.synthetic-file-generator",
+  "productName": "Synthetic File Generator",
+  "files": [
+    "frontend/dist/**/*",
+    "electron/**/*.cjs",
+    "electron/preload.js",
+    "package.json"
+  ],
+  "extraResources": [
+    {
+      "from": "backend/dist/run",
+      "to": "backend/dist/run",
+      "filter": ["**/*"]
+    }
+  ],
+  "directories": {
+    "buildResources": "assets"
+  },
+  "win": {
+    "target": ["nsis", "zip"]
+  },
+  "mac": {
+    "target": ["dmg", "zip"]
+  },
+  "linux": {
+    "target": ["AppImage", "zip"]
   }
+}
+
 }
