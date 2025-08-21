@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 const { app, ipcMain, dialog, BrowserWindow } = require("electron");
 const fs = require("fs");
 const path = require("path");
-const fetch = require("node-fetch"); // npm install node-fetch@2
+const http = require("http"); // zamiast fetch
 
 let backendProcess;
 let mainWindow;
@@ -17,7 +17,7 @@ function createWindow() {
       contextIsolation: true
     }
   });
-
+  startBackend()
   const frontendPath = path.join(process.resourcesPath, 'frontend/dist/index.html');
   mainWindow.loadFile(frontendPath);
 }
@@ -25,10 +25,24 @@ function createWindow() {
 async function waitForBackend(url, retries = 20, delay = 500) {
   for (let i = 0; i < retries; i++) {
     try {
-      const res = await fetch(url);
-      if (res.ok || res.status === 404) return true; // backend działa
+      await new Promise((resolve, reject) => {
+        const req = http.get(url, (res) => {
+          // uznajemy, że backend działa jeśli zwróci 200 lub 404
+          if (res.statusCode === 200 || res.statusCode === 404) {
+            res.resume(); // opróżnij strumień
+            resolve(true);
+          } else {
+            reject(new Error(`Status ${res.statusCode}`));
+          }
+        });
+        req.on("error", reject);
+        req.setTimeout(2000, () => {
+          req.destroy(new Error("timeout"));
+        });
+      });
+      return true; // jeśli się udało
     } catch (e) {
-      // ignore
+      // ignoruj i spróbuj ponownie
     }
     await new Promise(r => setTimeout(r, delay));
   }
@@ -49,14 +63,7 @@ function startBackend() {
 }
 
 app.whenReady().then(async () => {
-  startBackend();
-  try {
-    await waitForBackend("http://127.0.0.1:8000");
     createWindow();
-  } catch (err) {
-    console.error(err);
-    app.quit();
-  }
 });
 
 app.on('window-all-closed', () => {
