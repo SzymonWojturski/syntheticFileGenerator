@@ -17,8 +17,8 @@ class FileParameters(BaseModel):
     wallets: int = Field(..., gt=0, description="Number of wallets must be greater than 0")
     usd_min: float
     usd_max: float
-    date_min: Optional[date] = date(2010, 1, 1)
-    date_max: Optional[date] = datetime.now().date()
+    date_min: Optional[datetime] = datetime(2010, 1, 1)
+    date_max: Optional[datetime] = datetime.now()
     extention: FileFormatEnum
 
     @model_validator(mode="after")

@@ -28,7 +28,12 @@ function OptionalSettings({
                         <Switch 
                             color="default"
                             checked={seedState}
-                            onChange={(e) => setSeedState(e.target.checked)}
+                            onChange={(e) => {
+                                const checked = e.target.checked;
+                                setSeedState(checked);
+                                if (!checked) {
+                                setSeedState(null);
+                        }}}
                         />
                     </td>
                     <td>
