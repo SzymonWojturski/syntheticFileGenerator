@@ -13,7 +13,6 @@ function Cell({ dataType, dataValue, isActive, dataPlaceholder ,onChange}) {
                 />
             ) : (
                 <div className="cell-placeholder"></div>
-                // <></>
             )}
         </>
     );

@@ -15,10 +15,10 @@ from backend.contains import HASHES_FILE, get_addresses_file,AVAILABLE_TOKENS,CU
 import orjson
 from typing import Optional
 
-def get_token_names()->list[str]:
-    with open(AVAILABLE_TOKENS) as f:
-        d = json.load(f)
-        return d
+def get_token_names() -> list[str]:
+    with open(AVAILABLE_TOKENS, "r", encoding="utf-8") as f:
+        return json.load(f)
+
 
 def get_token_data()->dict[str,dict[str,str]]:
     with open(CURRENCY_VALUES_RANGE, "r", encoding="utf-8") as f:
@@ -51,17 +51,10 @@ def csv_reservoir_sampling(filename,n)->list[str]:
                     reservoir[j] = line
     return reservoir
 
-def random_date(start_date: Optional[date] = None, end_date: Optional[date] = None) -> datetime:
-
-    # if isinstance(start_date, date) and not isinstance(start_date, datetime):
-    #     start_date = datetime.combine(start_date, datetime.min.time())
-    # if isinstance(end_date, date) and not isinstance(end_date, datetime):
-    #     end_date = datetime.combine(end_date, datetime.max.time())
-    
+def random_date(start_date: Optional[datetime] = None, end_date: Optional[datetime] = None) -> datetime:
     delta_in_seconds = int((end_date - start_date).total_seconds())
     if delta_in_seconds <= 0:
         return start_date
-
     random_second = random.randrange(delta_in_seconds)
     return start_date + timedelta(seconds=random_second)
 
@@ -87,6 +80,7 @@ def generate_data(file_parameters: FileParameters)->list[dict]:
         asset_rate=random.uniform(token_data[token]["min"],token_data[token]["max"])
         date=random_date(start_date=file_parameters.date_min,end_date=file_parameters.date_max)
         wallet=random.choice(wallets[token])
+        print(date)
         partial={
             "Tx number":i,
             "Effect":amount_flat/asset_rate,
@@ -130,11 +124,12 @@ def convert_data_to_file(file_data,file_extention)-> io.BytesIO:
         case FileFormatEnum.XLSX:
             return generate_xlsx(file_data)
 
-def file_data_to_df(file_data) ->pd.DataFrame:
+def file_data_to_df(file_data) -> pd.DataFrame:
     df = pd.DataFrame(file_data)
     df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
     df['Date'] = df['Date'].dt.strftime(r"%Y-%m-%d %H:%M:%S")
     return df
+
 
 def generate_xlsx(file_data)-> io.BytesIO:
     output = io.BytesIO()
@@ -172,12 +167,9 @@ def generate_pdf(file_data):
     font_name = "Helvetica"
     font_size = 6
     max_widths = []
-    for col_idx in range(len(df.columns)):
-        max_len_item = max([row[col_idx] for row in table_data], key=len)
-        text_width = stringWidth(max_len_item, font_name, font_size)
-        max_widths.append(text_width+5)
-
-    table = Table(table_data, repeatRows=1, colWidths=max_widths)
+    num_cols = len(df.columns)
+    col_widths = [35,80,25,70,70,30,60,155,55,230]
+    table = Table(table_data, repeatRows=1, colWidths=col_widths)
 
     table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),

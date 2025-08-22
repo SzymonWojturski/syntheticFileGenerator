@@ -1,8 +1,7 @@
-import React ,{useState} from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MandatorySettings from '../../components/MandatorySettings.jsx';
 import OptionalSettings from '../../components/OptionalSettings.jsx';
-
 
 function FormPage() {
   const navigate = useNavigate();
@@ -31,58 +30,45 @@ function FormPage() {
     dateMax, setDateMax
   };
           
-function parseInput() {
-    const result = {
-        rows: rows,
-        extention: fileExtention,
-        wallets:wallets,
-        usd_min:usdMin,
-        usd_max:usdMax,
-    };
+  function parseInput() {
+      const result = {
+          rows: rows,
+          extention: fileExtention,
+          wallets:wallets,
+          usd_min:usdMin,
+          usd_max:usdMax,
+      };
 
-    if (!!seed) {
-        result.seed = parseInt(seed);
-    }
-    if (!!dateMin) {
-        result.date_min = Date(seed);
-    }
-    if (!!dateMax) {
-        result.date_max = Date(seed);
-    }
+      if (seed) result.seed = parseInt(seed);
+      if (dateMin) result.date_min = new Date(dateMin).toISOString().slice(0, 10);
+      if (dateMax) result.date_max = new Date(dateMax).toISOString().slice(0, 10);
 
-    return result;
-}
+      return result;
+  }
 
-const handleDownload = async (e) => {
-    e.preventDefault();
-    const json = parseInput();
-    console.log(JSON.stringify(json))
-    try {
-        const response = await fetch(`http://localhost:8000/file`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(json)
-        });
+  const handleDownload = async (e) => {
+      e.preventDefault();
+      const json = parseInput();
+      console.log(JSON.stringify(json))
+      try {
+          const response = await fetch(`http://localhost:8000/file`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(json)
+          });
 
-        const arrayBuffer = await response.arrayBuffer();
-        await window.files.saveFile(arrayBuffer, fileExtention);
-    } catch (e) {
-      
-        console.error(e);
-    }
-};
+          const arrayBuffer = await response.arrayBuffer();
+          await window.files.saveFile(arrayBuffer, fileExtention);
+      } catch (e) {
+          console.error(e);
+      }
+  };
 
   return (
     <>
-      <MandatorySettings
-      {...mandatoryProps}
-      />
-      <OptionalSettings
-      {...optionalProps}
-      />
-      <button
-       onClick={handleDownload}
-       className="download-button">
+      <MandatorySettings {...mandatoryProps} />
+      <OptionalSettings {...optionalProps} />
+      <button onClick={handleDownload} className="download-button">
         Download
       </button>
     </>

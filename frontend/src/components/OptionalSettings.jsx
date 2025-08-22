@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Switch from '@mui/material/Switch';
 import Cell from './Cell.jsx'
 import DatePickerToggle from './DatePickerToggle.jsx'
@@ -28,7 +28,12 @@ function OptionalSettings({
                         <Switch 
                             color="default"
                             checked={seedState}
-                            onChange={(e) => setSeedState(e.target.checked)}
+                            onChange={(e) => {
+                                const checked = e.target.checked;
+                                setSeedState(checked);
+                                if (!checked) {
+                                setSeedState(null);
+                        }}}
                         />
                     </td>
                     <td>
