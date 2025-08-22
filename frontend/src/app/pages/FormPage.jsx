@@ -40,8 +40,8 @@ function FormPage() {
       };
 
       if (seed) result.seed = parseInt(seed);
-      if (dateMin) result.date_min = new Date(dateMin).toISOString();
-      if (dateMax) result.date_max = new Date(dateMax).toISOString();
+      if (dateMin) result.date_min = new Date(dateMin).toISOString().slice(0, 10);
+      if (dateMax) result.date_max = new Date(dateMax).toISOString().slice(0, 10);
 
       return result;
   }
@@ -58,7 +58,6 @@ function FormPage() {
           });
 
           const arrayBuffer = await response.arrayBuffer();
-          // używamy preload API zamiast require('electron')
           await window.files.saveFile(arrayBuffer, fileExtention);
       } catch (e) {
           console.error(e);
